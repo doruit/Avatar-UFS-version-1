@@ -1,0 +1,48 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "staticSites_Avatar_2_name": {
+            "defaultValue": "Avatar-2",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/staticSites",
+            "apiVersion": "2023-12-01",
+            "name": "[parameters('staticSites_Avatar_2_name')]",
+            "location": "East US 2",
+            "tags": {
+                "hidden-link: /app-insights-resource-id": "/subscriptions/c200e3e7-0839-483b-848b-25a98451f2cd/resourceGroups/rg-ufs-copilot-web-t-02/providers/microsoft.insights/components/ai-ufs-copilot-web-t-02",
+                "hidden-link: /app-insights-instrumentation-key": "c1a8d6d3-25db-42ee-9e6c-569dc9bf4345",
+                "hidden-link: /app-insights-conn-string": "InstrumentationKey=c1a8d6d3-25db-42ee-9e6c-569dc9bf4345;IngestionEndpoint=https://eastus2-3.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus2.livediagnostics.monitor.azure.com/;ApplicationId=6e684829-1c22-40ab-bea6-1f9659872964"
+            },
+            "sku": {
+                "name": "Free",
+                "tier": "Free"
+            },
+            "properties": {
+                "repositoryUrl": "[concat('https://github.com/doruit/', parameters('staticSites_Avatar_2_name'))]",
+                "branch": "main",
+                "stagingEnvironmentPolicy": "Enabled",
+                "allowConfigFileUpdates": true,
+                "provider": "GitHub",
+                "enterpriseGradeCdnStatus": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Web/staticSites/basicAuth",
+            "apiVersion": "2023-12-01",
+            "name": "[concat(parameters('staticSites_Avatar_2_name'), '/default')]",
+            "location": "East US 2",
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/staticSites', parameters('staticSites_Avatar_2_name'))]"
+            ],
+            "properties": {
+                "applicableEnvironmentsMode": "SpecifiedEnvironments"
+            }
+        }
+    ]
+}  
